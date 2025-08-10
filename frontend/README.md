@@ -1,70 +1,139 @@
-# Getting Started with Create React App
+DreamSquad App — Painel de Tarefas + Chat Interno
+Aplicação web fullstack com Frontend em React e Backend em Go, projetada para ser hospedada em infraestrutura de nuvem de baixo custo usando AWS S3, Lambda, API Gateway e Terraform.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+O objetivo é fornecer um painel de tarefas interno integrado a um chat de equipe, priorizando baixo custo operacional, separação de ambientes (teste/produção) e infraestrutura automatizada.
 
-## Available Scripts
+🎯 Objetivos do Projeto
+Criar uma aplicação responsiva e ágil para gerenciamento interno de tarefas e comunicação.
 
-In the project directory, you can run:
+Garantir custo próximo de zero usando o Free Tier da AWS.
 
-### `npm start`
+Utilizar Terraform para provisionar infraestrutura como código, com deploy automatizado.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Separar ambientes de teste e produção para segurança e flexibilidade.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Documentar todo o processo para permitir replicação e manutenção futura.
 
-### `npm test`
+🛠️ Stack Tecnológica
+Frontend
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+React (Create React App)
 
-### `npm run build`
+TailwindCSS (estilização utilitária)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+PostCSS + Autoprefixer
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Backend
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Go (API REST para tarefas e chat)
 
-### `npm run eject`
+Comunicação via JSON
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Infraestrutura e Deploy
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+AWS S3 (Frontend estático)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+AWS Lambda + API Gateway (Backend serverless)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+AWS DynamoDB (armazenamento)
 
-## Learn More
+Terraform (infraestrutura como código)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Git (controle de versão e integração contínua futura)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+📌 Etapas do Desenvolvimento
+1. Configuração Inicial do Frontend ✅
+Criação do projeto React.
 
-### Code Splitting
+Instalação e configuração do TailwindCSS e PostCSS.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Correção de conflitos de dependências.
 
-### Analyzing the Bundle Size
+Validação do ambiente (npm start) com renderização de estilos.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Status: Concluído.
 
-### Making a Progressive Web App
+2. Painel de Tarefas (Frontend) 🚧
+Componentes para listagem, criação e edição de tarefas.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Layout responsivo com Tailwind.
 
-### Advanced Configuration
+Estados prontos para integração com API.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Status: Em andamento.
 
-### Deployment
+3. Backend em Go 🔜
+API para:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+CRUD de tarefas.
 
-### `npm run build` fails to minify
+Envio e recebimento de mensagens no chat.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Testes locais (go run).
+
+Status: Planejado.
+
+4. Integração Frontend ↔ Backend 🔜
+Configuração de chamadas HTTP.
+
+Teste do fluxo completo (tarefas + chat).
+
+Status: Planejado.
+
+5. Deploy AWS com Terraform 🔜
+Scripts para:
+
+Bucket S3 (frontend).
+
+Lambda + API Gateway (backend).
+
+DynamoDB (armazenamento).
+
+Configuração de variáveis para ambientes separados.
+
+Deploy automatizado (terraform apply).
+
+Status: Planejado.
+
+
+🚀 Como Executar (Frontend)
+
+# Clonar repositório
+git clone https://github.com/usuario/dreamsquad-app.git
+
+# Acessar o frontend
+cd dreamsquad-app/frontend
+
+# Instalar dependências
+npm install
+
+# Rodar servidor de desenvolvimento
+npm start
+
+=> Acesse em: http://localhost:3000
+
+
+📅 Próximos Passos
+Finalizar layout do painel de tarefas.
+
+Criar backend em Go e endpoints REST.
+
+Testar integração localmente.
+
+Provisionar AWS com Terraform.
+
+Documentar custos e otimizações.
+
+💡 Diferenciais
+Baixo custo: uso de S3, Lambda e DynamoDB no Free Tier.
+
+Escalabilidade: tecnologias modernas e performáticas.
+
+Cultura DevOps: código, infraestrutura e deploy integrados.
+
+Separação de ambientes: evita impacto em produção.
+
+
+Segue Arquiterura do Projeto 
+![alt text](image.png)
+
