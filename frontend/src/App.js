@@ -108,7 +108,7 @@ export default function App() {
           <span className="text-gray-600">Olá, {username}</span>
           <button
             onClick={logout}
-            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+            className="bg-pink-400 text-white px-3 py-1 rounded hover:bg-pink-500"
           >
             Sair
           </button>
@@ -161,7 +161,7 @@ export default function App() {
                 </label>
                 <button
                   onClick={() => deleteTask(task.id)}
-                  className="text-red-500 hover:underline text-sm"
+                  className="text-pink-500 hover:underline text-sm"
                 >
                   Apagar
                 </button>
