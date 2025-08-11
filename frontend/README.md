@@ -467,3 +467,61 @@ Aceitar a permissão de sistema e em seguida, aparecerá no terminal:
 O backend está ativo, pronto para responder aos endpoints que foram criados.
 
 Podemos testar as rotas no navegador, Postman ou Insomnia.
+
+Caso opte por Postman, esse é link 
+https://www.postman.com/ e o Insomnia, esse e o link https://insomnia.rest/download 
+
+Baixei ambos, mas achei o Insomnia mais intuitivo.
+
+Após o download, abri o terminal do Insomnia, na parte de URL, colei http://127.0.0.1:8080/tasks e selecionei o método POST, na opção Body, selecionei a opção de script JSON, colei o seguinte script 
+   {
+     "text": "Minha primeira tarefa",
+     "done": false
+   }
+
+Após envio no botão Send, recebi o retorno, o Preview: 
+
+    {
+    	"id": 1,
+	    "text": "Minha primeira tarefa",
+	    "done": false
+    }
+
+O que comprova que o backend Go está funcionando.
+O endpoint POST /tasks aceita e processa tarefas novas;
+As tarefas são armazenadas em memória.
+
+Para fazer uma requisição GET usando o Insomnia para o backend Go, segui estes passos:
+
+Abra o Insomnia.
+
+Criei uma nova requisição clicando no botão de "+" e escolhei "HTTP Request".
+
+Dei uma nome para a requisição, por exemplo, "Listar Tarefas".
+
+No campo de URL, digitar seu endpoint de GET, que no meu caso é:
+
+text
+http://127.0.0.1:8080/tasks
+
+Certifique-se de que o método da requisição está selecionado como GET (tem um dropdown próximo ao campo de URL para escolher).
+
+Clique no botão Send para enviar a requisição.
+
+Você verá a resposta da sua API na parte direita da tela, que deve ser um array JSON de tarefas, como:
+
+json
+[
+  {
+    "id": 1,
+    "text": "Minha primeira tarefa",
+    "done": false
+  },
+  ...
+]
+
+Esse processo faz a requisição GET ao seu backend para buscar a lista de tarefas.
+
+![alt text](<Captura de Tela (1646)-1.png>)
+
+
