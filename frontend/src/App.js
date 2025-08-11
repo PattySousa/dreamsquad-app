@@ -98,7 +98,7 @@ export default function App() {
           <img
             src={logo}
             alt="DreamSquad Logo"
-            className="h-30 w-auto bg-gray-50 rounded"
+            className="h-60 w-auto bg-gray-50 rounded"
             style={{ objectFit: 'contain' }}
           />
           <h1 className="text-2xl font-bold text-gray-800">Painel de Tarefas</h1>
