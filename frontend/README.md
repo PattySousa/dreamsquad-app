@@ -325,3 +325,145 @@ Fechar e reabrir navegador (tarefas devem persistir via localStorage)
 
 => Testes concluídos com sucesso, para essa etapa  :)
 
+Backend em Go para Painel de Tarefas + Chat
+
+1️⃣ Estrutura inicial do backend
+Criei a pasta do backend no projeto
+No terminal, dentro da raiz do projeto (onde está o frontend também):
+
+  mkdir backend
+  cd backend
+
+
+Iniciei um módulo Go novo
+
+1. Verifiquei se o Go está instalado
+Abra um novo terminal (PowerShell ou Prompt de Comando) e digitei:
+
+go version
+
+2. Instale o Go (se ainda não tiver instalado)
+Baixe o instalador oficial do Go para Windows nesta página:
+https://go.dev/dl/
+
+Escolha a versão estável para Windows (geralmente .msi)
+
+Execute o instalador e siga as instruções.
+
+3. Verifique se o PATH está configurado
+O instalador normalmente adiciona o Go ao PATH automaticamente.
+
+Para conferir:
+
+Abra o Painel de Controle → Sistema → Configurações avançadas do sistema → aba Avançado → clique em Variáveis de Ambiente .
+
+Na seção "Variáveis do sistema", encontre uma variável Pathe edite para garantir que o caminho para a pasta bin do Go esteja lá, algo como:
+
+texto
+C:\Go\bin
+Depois de ajustar, feche e abra o terminal novamente para que o PATH seja recarregado.
+
+4. Teste novamente no terminal
+Abra PowerShell ou Prompt de Comando novo e rode:
+
+texto
+go version
+Se mostrar a versão do Go, você está pronto para usar comandos gocomo go mod init.
+
+Precisei instalar o Go também nas dependências do VSCode para finalizar a utilização do mesmo.
+
+Próximos passos depois de concordar o Go
+Vá para a massa backend:
+
+texto
+cd C:\DreamSquad\dreamsquad-app\backend
+Rode o comando para inicializar o módulo Go:
+
+texto
+go mod init github.com/PattySousa/dreamsquad-backend
+
+Em seguida, criei uma pasta main.go dentro da pasta backend.
+
+Colei o seguinte script no main.go 
+
+package main
+
+import (
+    "encoding/json"
+    "log"
+    "net/http"
+    "sync"
+)
+
+// Estrutura de uma tarefa
+type Task struct {
+    ID   int    `json:"id"`
+    Text string `json:"text"`
+    Done bool   `json:"done"`
+}
+
+var (
+    tasks  []Task
+    nextID = 1
+    mu     sync.Mutex
+)
+
+// Listar tarefas
+func listTasks(w http.ResponseWriter, r *http.Request) {
+    mu.Lock()
+    defer mu.Unlock()
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(tasks)
+}
+
+// Criar nova tarefa
+func createTask(w http.ResponseWriter, r *http.Request) {
+    var t Task
+    if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
+        http.Error(w, "Requisição inválida", http.StatusBadRequest)
+        return
+    }
+    mu.Lock()
+    t.ID = nextID
+    nextID++
+    tasks = append(tasks, t)
+    mu.Unlock()
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(t)
+}
+
+// Função principal - inicia servidor
+func main() {
+    http.HandleFunc("/tasks", func(w http.ResponseWriter, r *http.Request) {
+        switch r.Method {
+        case "GET":
+            listTasks(w, r)
+        case "POST":
+            createTask(w, r)
+        default:
+            http.Error(w, "Método não permitido", http.StatusMethodNotAllowed)
+        }
+    })
+
+    log.Println("🚀 Servidor backend rodando em http://localhost:8080")
+    log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+Salvei o arquivo e no terminal do PowerShell, entrei na pasta do backend
+
+   CD Backend
+
+
+Em seguida, já dentro da pasta do Backend, rodei: 
+
+  go run main.go
+
+Aceitar a permissão de sistema e em seguida, aparecerá no terminal:
+
+2025/08/11 10:02:56 Servidor rodando em http://localhost:8080
+(data e hora e a confirmação que está rodando no localhost)
+
+✅ O que isso significa
+O backend está ativo, pronto para responder aos endpoints que foram criados.
+
+Podemos testar as rotas no navegador, Postman ou Insomnia.
