@@ -19,6 +19,10 @@ Separar ambientes de teste e produção para segurança e flexibilidade.
 
 Documentar todo o processo para permitir replicação e manutenção futura.
 
+![alt text](<Chat funcionando-1.png>)
+
+![alt text](<Tarefas funcionando.png>)
+
 
 🛠️ Stack Tecnológica
 
@@ -145,7 +149,7 @@ Separação de ambientes: evita impacto em produção durante testes.
 
 
 Segue Arquiterura do Projeto 
-![alt text](image.png)
+![alt text](arquiteturaProjeto.png)
 
 
 => Organizando o Visual do app
@@ -1105,5 +1109,142 @@ Testei os botões "Adicionar" e "Enviar"
 Após atualizações do App.js e main.go o frontend e backend passaram nos testes
 Consegui incluir tarefas diferentes, riscá-las ou apagá-las
 O chat também funcionou, incluindo mensagens e excluindo no final
-O app aceita login e finalização da seção
+O app aceita login e finalização da seção.
 
+Terminando os testes, reativei a conta no Console da AWS 
+
+Voltei para o VSCode e digite
+    CD Frontend 
+para entrar na pasta do FrontEnd e depois
+    npm install 
+em seguida
+    npm run build
+que gerou um arquivo build, dentro do meu FrontEnd local 
+
+Instalei o Terraform na minha mpaquina e no terminal do Power Shell chequei se estava tudo ok. Ele precisou ir para o C do meu computador e precisei entrar na pasta dele para checar sua versão instalada, com o comando abaixo:
+
+   .\terraform.exe -v
+
+
+  Criei dentro do projeto DreamSquad-App a pasta Infra, para rodar o Terraform
+    mkdir infra
+  Dentro dela, criei o arquivo main.tf para o código do Terraform - que desenha a infraestrutura da AWS
+
+  Criei tambem o arquivo dockerfile para build do backend
+
+Em seguida, entrei no Console da AWS para fazer o registro do Container Docker no ECR (Elastic Container Registre)
+
+https://meuID.signin.aws.amazon.com/console
+
+Precisei instalar o AWS CLI na minha máquina e também suas extensões no VSCode 
+Para confirmar a instalação, entrei no terminal do PowerShell e rodei o comando 
+
+      aws --version
+Confirmando a versão instalada:
+aws-cli/2.28.7 Python/3.13.4 Windows/11 exe/AMD64
+
+Precisei configuras o AWS CLI com as minhas credenciais de acesso.
+
+No terminal do VSCode executei:
+      aws configure 
+
+Precisei informar:
+
+AWS Access Key ID: colei a Access Key ID gerada no Console AWS para usuário IAM.
+AWS Secret Access Key: colei a Secret Access Key correspondente.
+Default region name: digite us-east-1 (ou a região que estiver usando).
+Default output format: digite json (padrão).
+
+Em seguida, para confirmar, rodei no terminal:
+      aws sts get-caller-identity
+Todos os registros foram confirmados corretamente 
+
+Retornei para a pasta do backend no powershell
+      cd backend 
+
+Entrei com o seguinte comando no terminal: 
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin meuID.dkr.ecr.us-east-1.amazonaws.com
+
+(Substituir o meuID por seu ID na AWS), retornou:
+      Login Succeeded
+Confirmando que deu certo
+
+Instalar, caso ainda não tenha o Docker Desktop, eu ja tinha, então só abri
+Esperar atualizar para buildar o docker no terminal do VSCode 
+      docker version 
+Para conferir no terminal se está tudo ok 
+
+
+Login no repositório ECR, autenticando o Docker com  conta AWS:
+
+      aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin meuID.dkr.ecr.us-east-1.amazonaws.com
+
+Retornou: Login Succeeded (deu certo)
+
+Build da imagem Docker no seu computador, a partir do Dockerfile na pasta do backend:
+
+  docker build -t dreamsquad-backend .
+  ![alt text](<imagem - build Dockerfile.png>)  
+
+A imagem Docker foi concluída com sucesso.
+
+Em seguida, fiz o tag da imagem para o repositório AWS ECR 
+
+   docker tag dreamsquad-backend:latest meuID.dkr.ecr.us-east-1.amazonaws.com/dreamsquad-backend:latest
+
+Enviei (push) da imagem para o repositório ECR da conta da AWS
+
+   docker push meuID.dkr.ecr.us-east-1.amazonaws.com/dreamsquad-backend:latest
+
+   ![alt text](<imagem - push ECR AWS.png>)
+
+Push no ECR concluído com sucesso. 
+
+(Certificar que o Docker Desktop está aberto e com status “Running”)
+
+Com o número do registro do container Docker no ECR, atualizei o arquivo main.tf para a infra do Terraform
+
+
+Depois, acessei a pasta de Infra, do Terraform:
+    CD INFRA 
+
+Inicializei o Terraform:
+    C:\Users\patri\terraform\terraform.exe init
+Retornou: Terraform has been successfully initialized!
+
+Apliquei a infraestrutura na AWS e subiu tudo automaticamente
+    C:\Users\patri\terraform\terraform.exe apply
+Quando pedir confirmação, digite yes.
+
+![alt text](<Bucket criado por Terraform.png>)
+
+Fiz o deploy do frontend para o bucket S3, rodando o comando abaixo dentro da pasta FrontEnd
+
+Dentro da pasta FrontEnd rodei:
+  npm install
+
+Em seguida, rodei:
+  npm run build
+
+Deployment concluído no link
+   https://cra.link/deployment
+
+O comando abaixo foi para enviar os arquivos da pasta build para o bucket S3.
+   Retornou tudo completo, sem erros.
+Assim, o FrontEnd foi publicado no S3.
+
+Incluído o arquivo CloudWatch.tf, dentro da pasta
+de Infra, do Terraform para as tarefas diárias
+agendadas.
+
+Precisa esvaziar o bucket S3, antes de destruí-lo, para evitar cobranças desnecessárias, por causa do volume dele
+  aws s3 rm s3://dreamsquadpatricia --recursive
+
+
+Para finalizar, encerrar com 
+C:\Users\patri\terraform\terraform.exe destroy
+
+Retornou: Destroy complete! Resources: 0 destroyed.
+
+Depois, apagar o bucket:
+aws s3 rb s3://dreamsquadpatricia
