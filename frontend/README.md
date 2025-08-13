@@ -1248,3 +1248,6 @@ Retornou: Destroy complete! Resources: 0 destroyed.
 
 Depois, apagar o bucket:
 aws s3 rb s3://dreamsquadpatricia
+
+
+Produzido por Patrícia Sousa
